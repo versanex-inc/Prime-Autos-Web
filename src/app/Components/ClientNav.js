@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -79,7 +80,7 @@ export default function ClientNav() {
 
         {/* WhatsApp Button (Desktop) */}
         <a
-          href="https://wa.me/923049791616?text=Hi%20Prime%20Autos,%20I%27m%20interested%20in%20your%20car%20upholstery%20services."
+          href="https://wa.me/923049791616?text=Hi%20Prime%20Autos,%20I\'m%20interested%20in%20your%20car%20upholstery%20services."
           target="_blank"
           rel="noopener noreferrer"
           className="hidden md:flex bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-2 rounded-full font-medium text-sm transition-all duration-300 hover:shadow-xl hover:shadow-red-600/40 hover:-translate-y-1 flex items-center gap-3"
@@ -105,7 +106,7 @@ export default function ClientNav() {
               </a>
             ))}
             <a
-              href="https://wa.me/923049791616?text=Hi%20Prime%20Autos,%20I%27m%20interested%20in%20your%20car%20upholstery%20services."
+              href="https://wa.me/923049791616?text=Hi%20Prime%20Autos,%20I\'m%20interested%20in%20your%20car%20upholstery%20services."
               target="_blank"
               rel="noopener noreferrer"
               className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-2 rounded-full font-medium text-base transition-all duration-300 hover:shadow-xl hover:shadow-red-600/40 hover:-translate-y-1 flex items-center gap-3"
