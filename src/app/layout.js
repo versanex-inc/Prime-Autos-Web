@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Prime Autos",
   description: "Premium car poshish service in Pakistan",
+  icons:{
+    icon:['/imgs/favicon/favicon.ico?v=4'],
+    apple:['imgs/favicon/apple-touch-icon.png?v=4'],
+    shortcut:['imgs/favicon/apple-touch-icon.png']
+  }
 };
 
 export default function RootLayout({ children }) {
