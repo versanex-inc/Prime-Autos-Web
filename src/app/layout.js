@@ -20,7 +20,10 @@ export const metadata = {
     icon:['/imgs/favicon/favicon.ico?v=4'],
     apple:['imgs/favicon/apple-touch-icon.png?v=4'],
     shortcut:['imgs/favicon/apple-touch-icon.png']
-  }
+  },
+  verification: {
+    google: "ozZ41ZOWAlxYbZTtbYIo4w-lH-R41y1eRCnowZKBbFk",
+  },
 };
 
 export default function RootLayout({ children }) {
