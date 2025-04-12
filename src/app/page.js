@@ -170,8 +170,8 @@ export default function Home() {
               </p>
               <div className="grid grid-cols-2 gap-6">
                 {[
-                  { value: "1500+", label: "Vehicles Transformed" },
-                  { value: "14+", label: "Years of Mastery" },
+                  { value: "6000+", label: "Vehicles Transformed" },
+                  { value: "20+", label: "Years of Mastery" },
                 ].map((stat, index) => (
                   <div
                     key={index}

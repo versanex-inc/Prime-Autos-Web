@@ -16,10 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Prime Autos",
   description: "Premium car poshish service in Pakistan",
-  icons:{
-    icon:['/imgs/favicon/favicon.ico?v=4'],
-    apple:['imgs/favicon/apple-touch-icon.png?v=4'],
-    shortcut:['imgs/favicon/apple-touch-icon.png']
+  icons: {
+    icon: ["/imgs/favicon/favicon.ico?v=4"],
+    apple: ["imgs/favicon/apple-touch-icon.png?v=4"],
+    shortcut: ["imgs/favicon/apple-touch-icon.png"],
   },
   verification: {
     google: "ozZ41ZOWAlxYbZTtbYIo4w-lH-R41y1eRCnowZKBbFk",
@@ -29,7 +29,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-950 text-gray-100`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-950 text-gray-100`}
+      >
         <ClientNav />
         {children}
         <footer className="bg-gray-950 border-t border-gray-900/50 py-12 relative">
@@ -42,7 +44,8 @@ export default function RootLayout({ children }) {
                   Prime<span className="text-white">Autos</span>
                 </div>
                 <p className="text-gray-300 text-sm font-light leading-relaxed">
-                  At Prime Autos, we redefine automotive luxury with bespoke upholstery craftsmanship.
+                  At Prime Autos, we redefine automotive luxury with bespoke
+                  upholstery craftsmanship.
                 </p>
                 <a
                   href="https://wa.me/923049791616?text=Hi%20Prime%20Autos,%20I\'m%20interested%20in%20your%20car%20upholstery%20services."
@@ -56,9 +59,11 @@ export default function RootLayout({ children }) {
 
               {/* Company Links */}
               <div>
-                <h4 className="text-red-600 font-medium uppercase tracking-widest text-sm mb-4">Company</h4>
+                <h4 className="text-red-600 font-medium uppercase tracking-widest text-sm mb-4">
+                  Company
+                </h4>
                 <ul className="space-y-2">
-                  {['about', 'services', 'gallery', 'contact'].map((item) => (
+                  {["about", "services", "gallery", "contact"].map((item) => (
                     <li key={item}>
                       <a
                         href={`#${item}`}
@@ -73,15 +78,17 @@ export default function RootLayout({ children }) {
 
               {/* Services Links */}
               <div>
-                <h4 className="text-red-600 font-medium uppercase tracking-widest text-sm mb-4">Services</h4>
+                <h4 className="text-red-600 font-medium uppercase tracking-widest text-sm mb-4">
+                  Services
+                </h4>
                 <ul className="space-y-2">
                   {[
-                    'Seat Upholstery',
-                    'Dashboard Refinery',
-                    'Roof Lining',
-                    'Door Artistry',
-                    'Floor Couture',
-                    'Steering Elegance',
+                    "Seat Upholstery",
+                    "Dashboard Refinery",
+                    "Roof Lining",
+                    "Door Artistry",
+                    "Floor Couture",
+                    "Steering Elegance",
                   ].map((service, index) => (
                     <li key={index}>
                       <a
@@ -97,7 +104,9 @@ export default function RootLayout({ children }) {
 
               {/* Contact Details */}
               <div>
-                <h4 className="text-red-600 font-medium uppercase tracking-widest text-sm mb-4">Contact</h4>
+                <h4 className="text-red-600 font-medium uppercase tracking-widest text-sm mb-4">
+                  Contact
+                </h4>
                 <ul className="space-y-2 text-gray-300 font-light">
                   <li className="flex items-center gap-2">
                     <svg
@@ -114,7 +123,10 @@ export default function RootLayout({ children }) {
                         d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                       />
                     </svg>
-                    <a href="tel:03250607081" className="hover:text-red-600 transition-all duration-300">
+                    <a
+                      href="tel:03250607081"
+                      className="hover:text-red-600 transition-all duration-300"
+                    >
                       0325 0607081
                     </a>
                   </li>
@@ -170,7 +182,7 @@ export default function RootLayout({ children }) {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
- росіd="round"
+                        росіd="round"
                         d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
                       />
                       <path
@@ -196,7 +208,8 @@ export default function RootLayout({ children }) {
             {/* Divider Line */}
             <div className="border-t border-gray-700/50 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm font-light">
               <div>
-                © {new Date().getFullYear()} Prime Autos. Crafted with Precision.
+                © {new Date().getFullYear()} Prime Autos. Crafted with
+                Precision.
               </div>
               <div className="flex gap-4 mt-4- mt-0">
                 <a
@@ -242,6 +255,21 @@ export default function RootLayout({ children }) {
                     viewBox="0 0 24 24"
                   >
                     <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 3.163 6.33 6.33 0 0 0-.127 6.463 6.33 6.33 0 0 0 11.08.747V9.987a8.316 8.316 0 0 0 3.668 1V7.543a4.792 4.792 0 0 1-1.994-.857z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://youtube.com/@primexautos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-red-600 transition-all duration-300 hover:scale-110"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
                   </svg>
                 </a>
               </div>
