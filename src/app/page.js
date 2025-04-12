@@ -159,7 +159,7 @@ export default function Home() {
                 Our Legacy
               </span>
               <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-8 leading-tight tracking-tight">
-                Crafting <span className="text-red-600">Excellence</span> Since 2010
+                Crafting <span className="text-red-600">Excellence</span> Since 2005
               </h3>
               <p className="text-gray-200 mb-6 text-lg leading-relaxed font-light">
                 At Prime Autos, we fuse artisanal mastery with cutting-edge innovation to redefine automotive luxury.
