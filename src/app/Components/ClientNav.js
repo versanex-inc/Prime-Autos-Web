@@ -80,7 +80,7 @@ export default function ClientNav() {
 
         {/* WhatsApp Button (Desktop) */}
         <a
-          href="https://wa.me/923049791616?text=Hi%20Prime%20Autos,%20I\'m%20interested%20in%20your%20car%20upholstery%20services."
+           href="https://wa.me/923049791616?text=Hi%20Prime%20Autos%20I%20am%20ready%20to%20book%20your%20custom%20car%20seat%20covers%20service%20but%20want%20to%20know%20some%20more%20details."
           target="_blank"
           rel="noopener noreferrer"
           className="hidden md:flex bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-2 rounded-full font-medium text-sm transition-all duration-300 hover:shadow-xl hover:shadow-red-600/40 hover:-translate-y-1 flex items-center gap-3"

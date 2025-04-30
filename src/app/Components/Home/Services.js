@@ -3,34 +3,40 @@ import React from 'react';
 const Services = () => {
   const servicesData = [
     {
-      title: "Seat Upholstery",
-      desc: "Precision-stitched luxury in leather, Alcantara, or custom fabrics.",
-      bgImage: "https://i.imgur.com/uN4LQ2W.jpg",
+      title: "Custom Car Seat Covers",
+      desc: "Precision-stitched custom car seat covers in leather, Alcantara, or poshish fabrics for a luxurious interior.",
+      bgImage: "/imgs/services/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-seats.webp",
+      alt: "Prime Autos custom car seat covers and poshish interior upholstery",
     },
     {
-      title: "Dashboard Refinery",
-      desc: "Elevate your cockpit with premium material wrapping.",
-      bgImage: "https://i.imgur.com/IRPtQmU.jpg",
+      title: "Dashboard Poshish Refinery",
+      desc: "Elevate your car's interior with premium poshish material wrapping for a refined dashboard.",
+      bgImage: "/imgs/services/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-about-dashboard.webp",
+      alt: "Prime Autos custom dashboard poshish interior refinement",
     },
     {
-      title: "Roof Lining",
-      desc: "Impeccable headliner craftsmanship in elite fabrics.",
-      bgImage: "https://i.imgur.com/gYnyRFA.jpg",
+      title: "Roof Lining Poshish",
+      desc: "Impeccable headliner craftsmanship with elite poshish fabrics for a stunning car interior.",
+      bgImage: "/imgs/services/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-roof.webp",
+      alt: "Prime Autos custom roof lining poshish interior",
     },
     {
-      title: "Door Artistry",
-      desc: "Bespoke panels with seamless feature integration.",
-      bgImage: "https://i.imgur.com/Q6Sg22J.jpg",
+      title: "Door Poshish Artistry",
+      desc: "Bespoke door panels with seamless poshish integration for a cohesive car interior.",
+      bgImage: "/imgs/services/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-doors.webp",
+      alt: "Prime Autos custom door poshish interior artistry",
     },
     {
-      title: "Floor Couture",
-      desc: "Luxury carpets with acoustic enhancement.",
-      bgImage: "https://i.imgur.com/SzNaKQs.jpg",
+      title: "Floor Poshish Couture",
+      desc: "Luxury carpets with poshish detailing and acoustic enhancement for a premium car interior.",
+      bgImage: "/imgs/services/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-floor.webp",
+      alt: "Prime Autos custom floor poshish interior couture",
     },
     {
-      title: "Steering Elegance",
-      desc: "Hand-stitched leather for supreme control.",
-      bgImage: "https://i.imgur.com/6DStsx5.jpg",
+      title: "Steering Poshish Elegance",
+      desc: "Hand-stitched leather and poshish steering wheels for supreme control and interior elegance.",
+      bgImage: "/imgs/services/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-steering.webp",
+      alt: "Prime Autos custom steering poshish interior elegance",
     },
   ];
 
@@ -42,10 +48,10 @@ const Services = () => {
             Our Expertise
           </span>
           <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight">
-            <span className="text-red-600">Bespoke</span> Upholstery Artistry
+            <span className="text-red-600">Prime Autos</span> Custom Upholstery Artistry
           </h3>
           <p className="text-gray-300 max-w-2xl mx-auto text-lg font-light">
-            Tailored solutions for the most discerning automotive connoisseurs.
+            Tailored custom car seat covers and poshish interiors for discerning automotive enthusiasts.
           </p>
         </div>
 
@@ -68,7 +74,7 @@ const Services = () => {
                   <p className="text-gray-200 font-light text-lg drop-shadow-xl">{service.desc}</p>
                 </div>
                 <a
-                  href="https://wa.me/923049791616?text=Hi%20Prime%20Autos,%20I%27m%20interested%20in%20your%20car%20upholstery%20services."
+                   href="https://wa.me/923049791616?text=Hi%20Prime%20Autos%20I%20am%20ready%20to%20book%20your%20custom%20car%20seat%20covers%20service%20but%20want%20to%20know%20some%20more%20details."
                   className="mt-6 inline-flex items-center gap-2 text-red-600 hover:text-red-500 text-sm font-medium transition-all duration-300 group-hover:gap-3 drop-shadow-xl"
                 >
                   Discover More
