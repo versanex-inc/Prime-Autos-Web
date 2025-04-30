@@ -24,21 +24,23 @@ export default function Home() {
     arrows: false,
     fade: true,
     autoplaySpeed: 3000,
+    lazyLoad: "ondemand", // Enable lazy loading for slider
     cssEase: "cubic-bezier(0.645, 0.045, 0.355, 1)",
     customPaging: () => (
       <div className="w-3 h-3 rounded-full bg-gray-500 hover:bg-red-600 transition-all duration-300" />
     ),
   };
 
-  // Hero images array
+  // Hero images array with SEO-friendly local paths
   const heroImages = [
-    "https://i.imgur.com/45riBBl.jpg",
-    "https://i.imgur.com/DkUSBTE.jpg",
-    "https://i.imgur.com/0TXJKJA.jpg",
-    "https://i.imgur.com/WqXRn64.jpg",
-    "https://i.imgur.com/PCVVOfZ.jpg",
-    "https://i.imgur.com/LLqoQ9I.jpg",
-    "https://i.imgur.com/yxwT8tb.jpg",
+    "/imgs/home-slider/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-1.webp",
+    "/imgs/home-slider/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-2.webp",
+    "/imgs/home-slider/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-3.webp",
+    "/imgs/home-slider/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-4.webp",
+    "/imgs/home-slider/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-5.webp",
+    "/imgs/home-slider/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-6.webp",
+    "/imgs/home-slider/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-7.webp",
+    "/imgs/home-slider/prime-autos-custom-car-seat-covers-upholstery-poshish-interior-8.webp",
   ];
 
   // Fetch gallery images
@@ -67,11 +69,11 @@ export default function Home() {
     fetchImages();
   }, []);
 
-  // Simulate hero images loading (you can modify this based on actual image loading)
+  // Simulate hero images loading
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsHeroLoading(false);
-    }, 1000); // Adjust delay as needed
+    }, 500); // Reduced for faster local images
     return () => clearTimeout(timer);
   }, []);
 
@@ -82,7 +84,6 @@ export default function Home() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-
   return (
     <div className="bg-gray-950 text-gray-100 overflow-x-hidden font-sans">
       {/* Hero Carousel */}
@@ -97,22 +98,27 @@ export default function Home() {
         ) : (
           <Slider {...settings} ref={carouselRef}>
             {heroImages.map((img, index) => (
-              <div key={index}>
-                <div
-                  className="h-screen bg-cover bg-center flex items-center relative after:absolute after:inset-0 after:bg-gradient-to-t after:from-gray-950/95 after:via-gray-950/70 after:to-transparent"
-                  style={{ backgroundImage: `url(${img})` }}
-                >
+              <div key={index} className="h-screen relative">
+                <Image
+                  src={img}
+                  alt={`Custom car seat covers and poshish interior upholstery by Prime Autos ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={index === 0} // Prioritize first image for LCP
+                  sizes="100vw" // Full-width carousel
+                  quality={80} // Balance size and quality
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/70 to-transparent">
                   <div className="container mx-auto px-6 relative z-10 pt-24 pb-32 animate-fadeIn">
                     <div className="max-w-3xl">
                       <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight tracking-tight">
                         <span className="bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent">
-                          Premium
+                          Premium<br/>
                         </span>{" "}
-                        Automotive Upholstery
+                        Custom Car Seat Covers
                       </h2>
                       <p className="text-lg md:text-xl text-gray-200 mb-10 leading-relaxed font-light">
-                        Elevate your vehicle's interior with our bespoke craftsmanship. Unrivaled luxury meets timeless
-                        design.
+                      Transform your car's interior with custom car seat covers and poshish. Luxury meets enduring style.
                       </p>
                       <div className="flex flex-wrap gap-6">
                         <a
@@ -121,7 +127,7 @@ export default function Home() {
                           rel="noopener noreferrer"
                           className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 rounded-full font-medium text-base transition-all duration-300 hover:shadow-xl hover:shadow-red-600/40 hover:-translate-y-1"
                         >
-                          WhatsApp Now
+                          Book Appointment
                         </a>
                         <button
                           onClick={() => scrollToSection("gallery")}
