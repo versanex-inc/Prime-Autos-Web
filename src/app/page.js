@@ -6,9 +6,10 @@ import "slick-carousel/slick/slick-theme.css";
 import Hero from "./Components/Home/Hero";
 import About from "./Components/Home/About";
 import Services from "./Components/Home/Services";
-import Gallery from "./Components/Home/Gallery";
+import Gallery from "./Components/Home/Designs";
 import Testimonials from "./Components/Home/Testimonials";
 import Contact from "./Components/Home/Contact";
+import Designs from "./Components/Home/Designs";
 
 export default function Home() {
   return (
@@ -23,7 +24,7 @@ export default function Home() {
       <Services/>
 
       {/* Gallery Section */}
-      <Gallery/>
+      <Designs/>
 
       {/* Testimonials */}
     <Testimonials/>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-const Gallery = () => {
+const Designs = () => {
   const [portfolioItems, setPortfolioItems] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -130,4 +130,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default Designs;

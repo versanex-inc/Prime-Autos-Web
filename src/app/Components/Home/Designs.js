@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-const Gallery = () => {
+const Designs = () => {
   const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
   const [isGalleryLoading, setIsGalleryLoading] = useState(true);
@@ -26,7 +26,7 @@ const Gallery = () => {
         }
       } catch (err) {
         console.error("Error fetching images:", err);
-        setError("Failed to load images. Please try again later.");
+        setError("Failed to load designs. Please try again later.");
         setImages([]);
       } finally {
         setIsGalleryLoading(false);
@@ -40,13 +40,13 @@ const Gallery = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
           <span className="text-red-600 font-medium uppercase tracking-widest text-sm mb-6 inline-block">
-            Our Masterpieces
+            Our Collection
           </span>
           <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight">
-            <span className="text-red-600">Gallery</span> of Distinction
+            <span className="text-red-600">Available</span> Designs
           </h3>
           <p className="text-gray-300 max-w-2xl mx-auto text-lg font-light">
-            Witness the artistry of our transformed interiors.
+            Explore our curated selection of interior designs ready for your space.
           </p>
         </div>
 
@@ -56,14 +56,14 @@ const Gallery = () => {
           ) : isGalleryLoading ? (
             <div className="text-center col-span-full">
               <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-red-600 mx-auto"></div>
-              <p className="text-gray-300 mt-4">Loading gallery...</p>
+              <p className="text-gray-300 mt-4">Loading designs...</p>
             </div>
           ) : images.length > 0 ? (
             images.map((image, index) => (
               <div key={index} className="group relative overflow-hidden rounded-2xl shadow-lg">
                 <Image
                   src={image.url}
-                  alt={image.title || `Gallery ${index + 1}`}
+                  alt={image.title || `Design ${index + 1}`}
                   width={400}
                   height={400}
                   className="w-full h-80 object-cover transition-all duration-700 group-hover:scale-110"
@@ -78,16 +78,16 @@ const Gallery = () => {
               </div>
             ))
           ) : (
-            <p className="text-gray-300 text-center col-span-full">No images available.</p>
+            <p className="text-gray-300 text-center col-span-full">No designs available.</p>
           )}
         </div>
 
         <div className="text-center mt-12">
           <Link
-            href="/gallery"
+            href="/designs"
             className="inline-flex items-center gap-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-3.5 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-xl hover:shadow-red-600/40 hover:-translate-y-1"
           >
-            Full Portfolio
+            Explore All Designs
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -104,4 +104,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default Designs;
