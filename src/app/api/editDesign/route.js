@@ -20,7 +20,7 @@ export async function PUT(request) {
       const formData = await request.formData();
       id = formData.get('id');
       file = formData.get('image');
-      imageUrl = file ? await saveFile(file, formData.get('title')) : formData.get('imageUrl') || '';
+      imageUrl = file ? await saveFile(file) : formData.get('imageUrl') || '';
       slug = formData.get('slug') || '';
       title = formData.get('title') || '';
       designNumber = formData.get('designNumber') || '';

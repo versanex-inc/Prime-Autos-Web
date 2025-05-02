@@ -19,7 +19,7 @@ export async function POST(request) {
     if (contentType?.includes('multipart/form-data')) {
       const formData = await request.formData();
       file = formData.get('image');
-      imageUrl = file ? await saveFile(file, formData.get('title')) : formData.get('imageUrl') || '';
+      imageUrl = file ? await saveFile(file) : formData.get('imageUrl') || '';
       slug = formData.get('slug') || '';
       title = formData.get('title') || '';
       designNumber = formData.get('designNumber') || '';
