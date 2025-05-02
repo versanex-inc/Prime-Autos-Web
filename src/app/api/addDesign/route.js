@@ -2,7 +2,7 @@ import { connectionStr } from '@/utils/db';
 import { Design } from '@/utils/models/design';
 import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
-import { saveFile } from '@/utils/saveFile';
+import { saveFile, deleteFile } from '@/utils/saveFile';
 import jwt from 'jsonwebtoken';
 
 export async function POST(request) {
@@ -19,7 +19,7 @@ export async function POST(request) {
     if (contentType?.includes('multipart/form-data')) {
       const formData = await request.formData();
       file = formData.get('image');
-      imageUrl = file ? await saveFile(file) : (formData.get('imageUrl') || '');
+      imageUrl = file ? await saveFile(file, formData.get('title')) : formData.get('imageUrl') || '';
       slug = formData.get('slug') || '';
       title = formData.get('title') || '';
       designNumber = formData.get('designNumber') || '';
@@ -33,16 +33,21 @@ export async function POST(request) {
       carName = body.carName || '';
     }
 
-    console.log('Parsed Data:', { file: file ? file.name : 'No file', imageUrl, slug, title, designNumber, carName });
-
     if (!imageUrl && !file || !slug || !title || !designNumber || !carName) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
     }
 
-    const newDesign = new Design({ image: { url: imageUrl }, slug, title, designNumber, carName });
-    await newDesign.save();
+    const newDesign = new Design({
+      image: { url: imageUrl },
+      slug,
+      title,
+      designNumber,
+      carName,
+    });
 
-    return NextResponse.json({ message: 'Design added successfully', design: newDesign }, { status: 201 });
+    const savedDesign = await newDesign.save();
+
+    return NextResponse.json({ message: 'Design added successfully', design: savedDesign }, { status: 201 });
   } catch (error) {
     console.error('Error adding design:', error);
     if (error.code === 11000) return NextResponse.json({ error: 'Slug must be unique' }, { status: 400 });

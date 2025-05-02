@@ -20,10 +20,7 @@ export async function PUT(request) {
       const formData = await request.formData();
       id = formData.get('id');
       file = formData.get('image');
-      imageUrl = formData.get('imageUrl') || '';
-      if (file && file !== 'null') {
-        imageUrl = await saveFile(file);
-      }
+      imageUrl = file ? await saveFile(file, formData.get('title')) : formData.get('imageUrl') || '';
       slug = formData.get('slug') || '';
       title = formData.get('title') || '';
       designNumber = formData.get('designNumber') || '';
@@ -38,23 +35,18 @@ export async function PUT(request) {
       carName = body.carName || '';
     }
 
-    console.log('Parsed Data:', { file: file ? file.name : 'No file', imageUrl, slug, title, designNumber, carName, id });
-
     if (!id || (!imageUrl && !file) || !slug || !title || !designNumber || !carName) {
       return NextResponse.json({ error: 'All fields are required, including ID' }, { status: 400 });
     }
 
-    // Fetch the existing design to get the old image URL
     const existingDesign = await Design.findById(id);
     if (!existingDesign) return NextResponse.json({ error: 'Design not found' }, { status: 404 });
 
     const oldImageUrl = existingDesign.image?.url || '';
 
-    // Update the design
     const updateData = {};
     if (imageUrl || imageUrl === '') {
       updateData['image.url'] = imageUrl;
-      // Delete the old image if a new one is uploaded or image is cleared
       if (oldImageUrl && (imageUrl !== oldImageUrl || imageUrl === '')) {
         deleteFile(oldImageUrl);
       }

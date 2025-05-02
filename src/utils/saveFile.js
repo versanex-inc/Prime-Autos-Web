@@ -1,13 +1,20 @@
 import path from 'path';
 import { mkdirSync, writeFileSync, unlinkSync, existsSync } from 'fs';
 
-export const saveFile = async (file) => {
+export const saveFile = async (file, title) => {
   if (!file) return null;
 
   const uploadDir = path.join(process.cwd(), 'public/uploads');
   mkdirSync(uploadDir, { recursive: true });
 
-  const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}-${file.name}`;
+  // Generate filename using only the title
+  const baseName = title
+    .toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/[^a-z0-9-]/g, '') // Remove special characters
+    .replace(/-+/g, '-'); // Replace multiple hyphens with a single hyphen
+  const ext = path.extname(file.name).toLowerCase();
+  const fileName = `${baseName}${ext}`;
   const filePath = path.join(uploadDir, fileName);
 
   // Validate file type

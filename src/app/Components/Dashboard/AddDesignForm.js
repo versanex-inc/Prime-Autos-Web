@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function AddDesignForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +13,24 @@ export default function AddDesignForm() {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Auto-generate title and slug from image filename
+  useEffect(() => {
+    if (file) {
+      const fileName = file.name.replace(/\.[^/.]+$/, ''); // Remove extension
+      setFormData((prev) => ({
+        ...prev,
+        title: fileName,
+        slug: fileName
+          .toLowerCase()
+          .replace(/\s+/g, '-') // Replace spaces with hyphens
+          .replace(/[^a-z0-9-]/g, '') // Remove special characters
+          .replace(/-+/g, '-'), // Replace multiple hyphens with a single hyphen
+      }));
+    } else if (!file && !formData.imageUrl) {
+      setFormData((prev) => ({ ...prev, title: '', slug: '' }));
+    }
+  }, [file, formData.imageUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,24 +127,8 @@ export default function AddDesignForm() {
           />
         </div>
         <div>
-          <label htmlFor="slug" className="block text-sm font-medium text-gray-200 mb-2">
-            Slug
-          </label>
-          <input
-            type="text"
-            id="slug"
-            name="slug"
-            value={formData.slug}
-            onChange={handleChange}
-            className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-            placeholder="Enter slug"
-            required
-            disabled={loading}
-          />
-        </div>
-        <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-200 mb-2">
-            Title
+            Title (Auto-generated from image, editable)
           </label>
           <input
             type="text"
@@ -135,7 +137,7 @@ export default function AddDesignForm() {
             value={formData.title}
             onChange={handleChange}
             className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-            placeholder="Enter title"
+            placeholder="Title will auto-generate from image"
             required
             disabled={loading}
           />
@@ -168,6 +170,22 @@ export default function AddDesignForm() {
             onChange={handleChange}
             className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
             placeholder="Enter car name"
+            required
+            disabled={loading}
+          />
+        </div>
+        <div>
+          <label htmlFor="slug" className="block text-sm font-medium text-gray-200 mb-2">
+            Slug (Auto-generated from image, editable)
+          </label>
+          <input
+            type="text"
+            id="slug"
+            name="slug"
+            value={formData.slug}
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+            placeholder="Slug will auto-generate from image"
             required
             disabled={loading}
           />
