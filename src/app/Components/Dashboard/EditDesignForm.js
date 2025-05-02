@@ -1,23 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function EditDesignForm({ design, onDesignUpdated }) {
-  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    id: design._id,
-    imageUrl: design.image.url,
-    slug: design.slug,
-    title: design.title,
-    designNumber: design.designNumber,
-    carName: design.carName,
+    id: design._id || '',
+    imageUrl: design.image?.url || '',
+    slug: design.slug || '',
+    title: design.title || '',
+    designNumber: design.designNumber || '',
+    carName: design.carName || '',
   });
+  const [file, setFile] = useState(null);
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setFormData({
+      id: design._id || '',
+      imageUrl: design.image?.url || '',
+      slug: design.slug || '',
+      title: design.title || '',
+      designNumber: design.designNumber || '',
+      carName: design.carName || '',
+    });
+  }, [design]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleDeleteImage = () => {
+    setFile(null);
+    setFormData((prev) => ({ ...prev, imageUrl: '' }));
   };
 
   const handleSubmit = async (e) => {
@@ -26,21 +46,37 @@ export default function EditDesignForm({ design, onDesignUpdated }) {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/editDesign', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      if (file) {
+        const data = new FormData();
+        data.append('id', formData.id);
+        data.append('image', file);
+        data.append('imageUrl', formData.imageUrl);
+        data.append('slug', formData.slug);
+        data.append('title', formData.title);
+        data.append('designNumber', formData.designNumber);
+        data.append('carName', formData.carName);
 
-      const data = await res.json();
+        console.log('Sending FormData:');
+        for (let pair of data.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to update design');
+        const res = await fetch('/api/editDesign', { method: 'PUT', body: data });
+        const dataRes = await res.json();
+        if (!res.ok) throw new Error(dataRes.error || 'Failed to update design');
+        setMessage({ type: 'success', text: 'Design updated successfully!' });
+      } else {
+        const res = await fetch('/api/editDesign', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+        const dataRes = await res.json();
+        if (!res.ok) throw new Error(dataRes.error || 'Failed to update design');
+        setMessage({ type: 'success', text: 'Design updated successfully!' });
       }
 
-      setMessage({ type: 'success', text: 'Design updated successfully!' });
       onDesignUpdated();
-      setTimeout(() => setIsOpen(false), 1500); // Close drawer after 1.5s
     } catch (err) {
       setMessage({ type: 'error', text: err.message });
     } finally {
@@ -49,144 +85,133 @@ export default function EditDesignForm({ design, onDesignUpdated }) {
   };
 
   return (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition-all duration-300"
-      >
-        Edit
-      </button>
-
-      <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-96 bg-gray-900 shadow-xl z-50 transform transition-transform duration-300 ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold text-white">Edit Design</h3>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-gray-400 hover:text-white transition-all duration-300"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          {message && (
-            <div
-              className={`mb-4 p-3 rounded ${
-                message.type === 'success' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400'
-              }`}
-            >
-              {message.text}
-            </div>
-          )}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-200 mb-2">
-                Image URL
-              </label>
-              <input
-                type="text"
-                id="imageUrl"
-                name="imageUrl"
-                value={formData.imageUrl}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-                placeholder="Enter image URL"
-                required
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label htmlFor="slug" className="block text-sm font-medium text-gray-200 mb-2">
-                Slug
-              </label>
-              <input
-                type="text"
-                id="slug"
-                name="slug"
-                value={formData.slug}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-                placeholder="Enter slug"
-                required
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-200 mb-2">
-                Title
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-                placeholder="Enter title"
-                required
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label htmlFor="designNumber" className="block text-sm font-medium text-gray-200 mb-2">
-                Design Number
-              </label>
-              <input
-                type="number"
-                id="designNumber"
-                name="designNumber"
-                value={formData.designNumber}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-                placeholder="Enter design number"
-                required
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label htmlFor="carName" className="block text-sm font-medium text-gray-200 mb-2">
-                Car Name
-              </label>
-              <input
-                type="text"
-                id="carName"
-                name="carName"
-                value={formData.carName}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-                placeholder="Enter car name"
-                required
-                disabled={loading}
-              />
-            </div>
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                className={`flex-1 p-3 rounded font-medium text-base text-white transition-all duration-300 ${
-                  loading
-                    ? 'bg-gray-600 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 hover:shadow-xl hover:shadow-red-600/40 hover:-translate-y-1'
-                }`}
-                disabled={loading}
-              >
-                {loading ? 'Updating...' : 'Update Design'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="flex-1 p-3 rounded font-medium text-base text-white bg-gray-600 hover:bg-gray-700 transition-all duration-300"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+    <div className="bg-gray-900/80 p-6 rounded-lg shadow-xl border border-gray-700">
+      <h3 className="text-xl font-semibold text-white mb-4">Edit Design</h3>
+      {message && (
+        <div
+          className={`mb-4 p-3 rounded ${
+            message.type === 'success' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400'
+          }`}
+        >
+          {message.text}
         </div>
-      </div>
-    </>
+      )}
+      <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
+        <div>
+          <label htmlFor="image" className="block text-sm font-medium text-gray-200 mb-2">
+            Upload New Image
+          </label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/jpeg,image/jpg,image/png,image/gif"
+            onChange={handleFileChange}
+            className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+            disabled={loading}
+          />
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex-1">
+            <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-200 mb-2">
+              Or Enter New Image URL
+            </label>
+            <input
+              type="text"
+              id="imageUrl"
+              name="imageUrl"
+              value={formData.imageUrl}
+              onChange={handleChange}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+              placeholder="Enter image URL"
+              disabled={loading || file}
+            />
+          </div>
+          {formData.imageUrl && !file && (
+            <button
+              type="button"
+              onClick={handleDeleteImage}
+              className="p-3 bg-red-600 text-white rounded hover:bg-red-700 transition-all duration-300"
+              disabled={loading}
+            >
+              Delete Image
+            </button>
+          )}
+        </div>
+        <div>
+          <label htmlFor="slug" className="block text-sm font-medium text-gray-200 mb-2">
+            Slug
+          </label>
+          <input
+            type="text"
+            id="slug"
+            name="slug"
+            value={formData.slug}
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+            placeholder="Enter slug"
+            required
+            disabled={loading}
+          />
+        </div>
+        <div>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-200 mb-2">
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+            placeholder="Enter title"
+            required
+            disabled={loading}
+          />
+        </div>
+        <div>
+          <label htmlFor="designNumber" className="block text-sm font-medium text-gray-200 mb-2">
+            Design Number
+          </label>
+          <input
+            type="number"
+            id="designNumber"
+            name="designNumber"
+            value={formData.designNumber}
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+            placeholder="Enter design number"
+            required
+            disabled={loading}
+          />
+        </div>
+        <div>
+          <label htmlFor="carName" className="block text-sm font-medium text-gray-200 mb-2">
+            Car Name
+          </label>
+          <input
+            type="text"
+            id="carName"
+            name="carName"
+            value={formData.carName}
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+            placeholder="Enter car name"
+            required
+            disabled={loading}
+          />
+        </div>
+        <button
+          type="submit"
+          className={`w-full p-3 rounded font-medium text-base text-white transition-all duration-300 ${
+            loading ? 'bg-gray-600 cursor-not-allowed' : 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 hover:shadow-xl hover:shadow-red-600/40 hover:-translate-y-1'
+          }`}
+          disabled={loading}
+        >
+          {loading ? 'Updating...' : 'Update Design'}
+        </button>
+      </form>
+    </div>
   );
 }
