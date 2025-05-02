@@ -14,7 +14,7 @@ export async function PUT(request) {
     if (!token) return NextResponse.json({ error: 'No token found' }, { status: 401 });
     jwt.verify(token, process.env.JWT_SECRET);
 
-    let id, imageUrl, slug, title, designNumber, carName, file;
+    let id, imageUrl, slug, title, designNumber, carName, file, starred;
     const contentType = request.headers.get('content-type');
     if (contentType?.includes('multipart/form-data')) {
       const formData = await request.formData();
@@ -25,18 +25,20 @@ export async function PUT(request) {
       title = formData.get('title') || '';
       designNumber = formData.get('designNumber') || '';
       carName = formData.get('carName') || '';
+      starred = formData.get('starred') === 'true' || false;
     } else {
       const body = await request.json();
       id = body.id;
-      imageUrl = body.imageUrl || '';
+      imageUrl = body.imageUrl;
       slug = body.slug || '';
       title = body.title || '';
       designNumber = body.designNumber || '';
       carName = body.carName || '';
+      starred = body.starred !== undefined ? body.starred : undefined;
     }
 
-    if (!id || (!imageUrl && !file) || !slug || !title || !designNumber || !carName) {
-      return NextResponse.json({ error: 'All fields are required, including ID' }, { status: 400 });
+    if (!id) {
+      return NextResponse.json({ error: 'Design ID is required' }, { status: 400 });
     }
 
     const existingDesign = await Design.findById(id);
@@ -45,8 +47,12 @@ export async function PUT(request) {
     const oldImageUrl = existingDesign.image?.url || '';
 
     const updateData = {};
-    if (imageUrl || imageUrl === '') {
-      updateData['image.url'] = imageUrl;
+    const isImageUpdate = imageUrl !== undefined || file; // Check if image is being updated
+    if (isImageUpdate) {
+      if (!slug || !title || !designNumber || !carName) {
+        return NextResponse.json({ error: 'All fields are required when updating image' }, { status: 400 });
+      }
+      updateData['image.url'] = imageUrl || '';
       if (oldImageUrl && (imageUrl !== oldImageUrl || imageUrl === '')) {
         deleteFile(oldImageUrl);
       }
@@ -55,6 +61,12 @@ export async function PUT(request) {
     if (title) updateData.title = title;
     if (designNumber) updateData.designNumber = designNumber;
     if (carName) updateData.carName = carName;
+    if (starred !== undefined) updateData.starred = starred;
+
+    // Ensure at least one field is being updated
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json({ error: 'No fields provided to update' }, { status: 400 });
+    }
 
     const updatedDesign = await Design.findByIdAndUpdate(
       id,

@@ -13,11 +13,11 @@ export async function GET() {
       await mongoose.connect(connectionStr);
     }
 
-    const designs = await Design.find().sort({ createdAt: -1 });
+    const designs = await Design.find({ starred: true }).sort({ createdAt: -1 });
 
     return NextResponse.json({ designs }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching designs:', error);
-    return NextResponse.json({ error: 'Failed to fetch designs' }, { status: 500 });
+    console.error('Error fetching starred designs:', error);
+    return NextResponse.json({ error: 'Failed to fetch starred designs' }, { status: 500 });
   }
 }

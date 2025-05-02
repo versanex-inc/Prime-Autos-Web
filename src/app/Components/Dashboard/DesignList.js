@@ -31,6 +31,26 @@ export default function DesignList() {
     }
   };
 
+  const handleToggleStar = async (designId, currentStarred) => {
+    try {
+      const res = await fetch('/api/editDesign', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: designId, starred: !currentStarred }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to update star status');
+      }
+
+      fetchDesigns(); // Refresh the list after toggling star
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   useEffect(() => {
     fetchDesigns();
   }, []);
@@ -66,6 +86,7 @@ export default function DesignList() {
                 <th className="p-3">Slug</th>
                 <th className="p-3">Design Number</th>
                 <th className="p-3">Car Name</th>
+                <th className="p-3">Starred</th>
                 <th className="p-3">Actions</th>
               </tr>
             </thead>
@@ -83,6 +104,16 @@ export default function DesignList() {
                   <td className="p-3">{design.slug}</td>
                   <td className="p-3">{design.designNumber}</td>
                   <td className="p-3">{design.carName}</td>
+                  <td className="p-3">
+                    <button
+                      onClick={() => handleToggleStar(design._id, design.starred)}
+                      className={`p-1 rounded transition-all duration-300 ${
+                        design.starred ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-300'
+                      }`}
+                    >
+                      {design.starred ? '★' : '☆'}
+                    </button>
+                  </td>
                   <td className="p-3 flex gap-2">
                     <Link href={`/dashboard/manageDesigns/editDesign/${design._id}`}>
                       <span className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition-all duration-300 cursor-pointer">
