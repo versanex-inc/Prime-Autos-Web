@@ -5,46 +5,47 @@ import Link from "next/link";
 import Image from "next/image";
 
 const Designs = () => {
-  const [portfolioItems, setPortfolioItems] = useState([]);
+  const [designs, setDesigns] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchImages() {
+    async function fetchDesigns() {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/gallery-images");
+        const response = await fetch("/api/getDesigns");
         if (!response.ok) {
-          throw new Error("Failed to fetch images");
+          throw new Error("Failed to fetch designs");
         }
         const data = await response.json();
-        if (Array.isArray(data)) {
-          const items = data.map((item, index) => ({
-            id: index + 1,
-            src: item.url,
-            title: item.title || `Project #${index + 1}`,
-            category: item.description || "Bespoke Interior Design",
+        if (Array.isArray(data.designs)) {
+          const items = data.designs.map((item) => ({
+            id: item._id,
+            slug: item.slug,
+            src: item.image.url,
+            title: item.title || `Design #${item.designNumber}`,
+            category: `${item.carName} - Design #${item.designNumber}`,
             width: 600,
             height: 400,
           }));
-          setPortfolioItems(items);
+          setDesigns(items);
         } else {
-          throw new Error("Expected an array of image data");
+          throw new Error("Expected an array of designs");
         }
       } catch (err) {
-        console.error("Error fetching images:", err);
-        setError("Failed to load gallery images. Please try again later.");
-        setPortfolioItems([]);
+        console.error("Error fetching designs:", err);
+        setError("Failed to load designs. Please try again later.");
+        setDesigns([]);
       } finally {
         setIsLoading(false);
       }
     }
-    fetchImages();
+    fetchDesigns();
   }, []);
 
   return (
     <div className="bg-gray-950 text-gray-100 min-h-screen font-sans">
-      {/* Gallery Hero */}
+      {/* Designs Hero */}
       <section className="pt-32 pb-20 bg-gradient-to-b from-gray-900 to-gray-950">
         <div className="container mx-auto px-6 text-center">
           <span className="text-red-600 font-medium uppercase tracking-widest text-sm mb-6 inline-block">
@@ -52,17 +53,17 @@ const Designs = () => {
           </span>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight tracking-tight">
             <span className="bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent">
-              Masterworks
+              Prime Autos
             </span>{" "}
-            in Motion
+            Designs
           </h1>
           <p className="text-gray-300 max-w-2xl mx-auto text-lg font-light">
-            Explore our curated collection of automotive transformations, where craftsmanship meets passion.
+            Explore Prime Autos' custom car seat covers, poshish, and interior designs for your vehicle.
           </p>
         </div>
       </section>
 
-      {/* Gallery Grid */}
+      {/* Designs Grid */}
       <section className="py-20 bg-gray-950">
         <div className="container mx-auto px-6">
           {error ? (
@@ -70,35 +71,34 @@ const Designs = () => {
           ) : isLoading ? (
             <div className="text-center">
               <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-red-600 mx-auto"></div>
-              <p className="text-gray-300 mt-4">Loading gallery images...</p>
+              <p className="text-gray-300 mt-4">Loading designs...</p>
             </div>
-          ) : portfolioItems.length > 0 ? (
+          ) : designs.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {portfolioItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="group relative overflow-hidden rounded-2xl shadow-lg"
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.title}
-                    width={item.width}
-                    height={item.height}
-                    className="w-full h-80 object-cover transition-all duration-700 group-hover:scale-110"
-                    style={{ objectFit: "cover" }}
-                    unoptimized // Fix: Bypass Next.js optimization
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <h3 className="text-white font-bold text-xl mb-1">{item.title}</h3>
-                      <p className="text-red-600 text-sm">{item.category}</p>
+              {designs.map((item) => (
+                <Link href={`/designs/design/${item.slug}`} key={item.id}>
+                  <div className="group relative overflow-hidden rounded-2xl shadow-lg">
+                    <Image
+                      src={item.src}
+                      alt={`${item.title} - Custom Car Seat Covers by Prime Autos`}
+                      width={item.width}
+                      height={item.height}
+                      className="w-full h-80 object-cover transition-all duration-700 group-hover:scale-110"
+                      style={{ objectFit: "cover" }}
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
+                      <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 className="text-white font-bold text-xl mb-1">{item.title}</h3>
+                        <p className="text-red-600 text-sm">{item.category}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
-            <p className="text-gray-300 text-center">No gallery images available.</p>
+            <p className="text-gray-300 text-center">No designs available.</p>
           )}
 
           <div className="text-center mt-16">
@@ -125,7 +125,6 @@ const Designs = () => {
           </div>
         </div>
       </section>
-
     </div>
   );
 };

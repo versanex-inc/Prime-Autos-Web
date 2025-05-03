@@ -22,10 +22,13 @@ export default function ClientNav() {
           });
         }
         setIsMobileMenuOpen(false);
+      } else if (href?.startsWith("/")) {
+        // Handle navigation to a new page
+        setIsMobileMenuOpen(false);
       }
     };
 
-    const navLinks = document.querySelectorAll('a[href^="#"]');
+    const navLinks = document.querySelectorAll('a[href^="#"], a[href^="/"]');
     navLinks.forEach(link => {
       link.addEventListener("click", handleSmoothScroll);
     });
@@ -46,15 +49,15 @@ export default function ClientNav() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-10">
-          {['about', 'services', 'gallery', 'contact'].map((item) => (
-            <a
+          {['about', 'services', 'designs', 'contact'].map((item) => (
+            <Link
               key={item}
-              href={`#${item}`}
+              href={`/#${item}`}
               className="text-gray-300 hover:text-red-600 transition-all duration-300 font-medium text-sm uppercase tracking-widest relative group"
             >
               {item}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 group-hover:w-full transition-all duration-300" />
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -80,7 +83,7 @@ export default function ClientNav() {
 
         {/* WhatsApp Button (Desktop) */}
         <a
-           href="https://wa.me/923049791616?text=Hi%20Prime%20Autos%20I%20am%20ready%20to%20book%20your%20custom%20car%20seat%20covers%20service%20but%20want%20to%20know%20some%20more%20details."
+          href="https://wa.me/923049791616?text=Hi%20Prime%20Autos%20I%20am%20ready%20to%20book%20your%20custom%20car%20seat%20covers%20service%20but%20want%20to%20know%20some%20more%20details."
           target="_blank"
           rel="noopener noreferrer"
           className="hidden md:flex bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-2 rounded-full font-medium text-sm transition-all duration-300 hover:shadow-xl hover:shadow-red-600/40 hover:-translate-y-1 flex items-center gap-3"
@@ -96,14 +99,14 @@ export default function ClientNav() {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 top-[88px] bg-gray-950/95 backdrop-blur-xl z-40 md:hidden">
           <div className="flex flex-col items-center gap-8 py-8">
-            {['about', 'services', 'gallery', 'contact'].map((item) => (
-              <a
+            {['about', 'services', 'designs', 'contact'].map((item) => (
+              <Link
                 key={item}
-                href={`#${item}`}
+                href={`/#${item}`}
                 className="text-gray-300 hover:text-red-600 transition-all duration-300 font-medium text-lg uppercase tracking-widest"
               >
                 {item}
-              </a>
+              </Link>
             ))}
             <a
               href="https://wa.me/923049791616?text=Hi%20Prime%20Autos,%20I\'m%20interested%20in%20your%20car%20upholstery%20services."

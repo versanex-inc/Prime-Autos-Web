@@ -5,80 +5,82 @@ import Link from "next/link";
 import Image from "next/image";
 
 const Designs = () => {
-  const [images, setImages] = useState([]);
+  const [designs, setDesigns] = useState([]);
   const [error, setError] = useState(null);
-  const [isGalleryLoading, setIsGalleryLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch gallery images
+  // Fetch starred designs
   useEffect(() => {
-    async function fetchImages() {
+    async function fetchDesigns() {
       try {
-        setIsGalleryLoading(true);
-        const response = await fetch("/api/home-gallery");
+        setIsLoading(true);
+        const response = await fetch("/api/getStarredDesigns");
         if (!response.ok) {
-          throw new Error("Failed to fetch images");
+          throw new Error("Failed to fetch designs");
         }
         const data = await response.json();
-        if (Array.isArray(data)) {
-          setImages(data);
+        if (Array.isArray(data.designs)) {
+          setDesigns(data.designs);
         } else {
-          throw new Error("Expected an array of image URLs");
+          throw new Error("Expected an array of designs");
         }
       } catch (err) {
-        console.error("Error fetching images:", err);
+        console.error("Error fetching designs:", err);
         setError("Failed to load designs. Please try again later.");
-        setImages([]);
+        setDesigns([]);
       } finally {
-        setIsGalleryLoading(false);
+        setIsLoading(false);
       }
     }
-    fetchImages();
+    fetchDesigns();
   }, []);
 
   return (
-    <section id="gallery" className="py-32 bg-gray-900">
+    <section id="designs" className="py-32 bg-gray-900">
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
           <span className="text-red-600 font-medium uppercase tracking-widest text-sm mb-6 inline-block">
             Our Collection
           </span>
           <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight">
-            <span className="text-red-600">Available</span> Designs
+            <span className="text-red-600">Featured</span> Designs
           </h3>
           <p className="text-gray-300 max-w-2xl mx-auto text-lg font-light">
-            Explore our curated selection of interior designs ready for your space.
+            Discover Prime Autos' custom car seat covers and poshish for stunning interior designs.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {error ? (
             <p className="text-gray-300 text-center col-span-full">{error}</p>
-          ) : isGalleryLoading ? (
+          ) : isLoading ? (
             <div className="text-center col-span-full">
               <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-red-600 mx-auto"></div>
               <p className="text-gray-300 mt-4">Loading designs...</p>
             </div>
-          ) : images.length > 0 ? (
-            images.map((image, index) => (
-              <div key={index} className="group relative overflow-hidden rounded-2xl shadow-lg">
-                <Image
-                  src={image.url}
-                  alt={image.title || `Design ${index + 1}`}
-                  width={400}
-                  height={400}
-                  className="w-full h-80 object-cover transition-all duration-700 group-hover:scale-110"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end p-6">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <h4 className="text-white font-bold text-xl mb-1">{image.title}</h4>
-                    <p className="text-red-600 text-sm">{image.description}</p>
+          ) : designs.length > 0 ? (
+            designs.map((design) => (
+              <Link href={`/designs/design/${design.slug}`} key={design.id}>
+                <div className="group relative overflow-hidden rounded-2xl shadow-lg">
+                  <Image
+                    src={design.image.url}
+                    alt={`${design.title} - Custom Car Seat Covers by Prime Autos`}
+                    width={400}
+                    height={400}
+                    className="w-full h-80 object-cover transition-all duration-700 group-hover:scale-110"
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end p-6">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <h4 className="text-white font-bold text-xl mb-1">{design.title}</h4>
+                      <p className="text-red-600 text-sm">{design.carName} - Design #{design.designNumber}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))
           ) : (
-            <p className="text-gray-300 text-center col-span-full">No designs available.</p>
+            <p className="text-gray-300 text-center col-span-full">No featured designs available.</p>
           )}
         </div>
 
