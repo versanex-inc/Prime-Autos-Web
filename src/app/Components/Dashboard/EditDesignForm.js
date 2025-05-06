@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 
@@ -123,7 +123,7 @@ export default function EditDesignForm({ design, onDesignUpdated }) {
             type="file"
             id="image"
             name="image"
-            accept="image/jpeg,image/jpg,image/png,image/gif"
+            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
             onChange={handleFileChange}
             className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
             disabled={loading}

@@ -15,9 +15,9 @@ export const saveFile = async (file) => {
   const filePath = path.join(uploadDir, uniqueName);
 
   // Validate file type
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
   if (!allowedTypes.includes(file.type)) {
-    throw new Error('Only images (jpeg, jpg, png, gif) are allowed');
+    throw new Error('Only images (JPEG, JPG, PNG, GIF, WebP) are allowed');
   }
 
   // Validate file size (5MB limit)
