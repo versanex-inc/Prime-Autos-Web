@@ -22,19 +22,19 @@ export default function ClientNav() {
           });
         }
         setIsMobileMenuOpen(false);
-      } else if (href?.startsWith("/")) {
-        // Handle navigation to a new page
-        setIsMobileMenuOpen(false);
       }
+      // Remove the else if (href?.startsWith("/")) block
+      // Let Next.js handle navigation for links starting with "/"
     };
-
-    const navLinks = document.querySelectorAll('a[href^="#"], a[href^="/"]');
-    navLinks.forEach(link => {
+  
+    // Only apply the event listener to links starting with "#"
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(link => {
       link.addEventListener("click", handleSmoothScroll);
     });
-
+  
     return () => {
-      navLinks.forEach(link => {
+      anchorLinks.forEach(link => {
         link.removeEventListener("click", handleSmoothScroll);
       });
     };
